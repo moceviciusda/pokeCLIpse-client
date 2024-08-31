@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func commandHelp(cfg *config, params ...string) error {
-	fmt.Println("Wecome to the Pokedex!\nUsage:")
+	fmt.Println("Wecome to the PokeCLIpse!\nUsage:")
 	fmt.Println()
 
 	for key, command := range getCommands() {

@@ -19,9 +19,14 @@ func getCommands() map[string]cliCommand {
 			callback:    commandExit,
 		},
 		"login": {
-			name:        "login",
+			name:        "login <username> <password>",
 			description: "Login to the game",
 			callback:    commandLogin,
+		},
+		"register": {
+			name:        "register <username> <password>",
+			description: "Register a new account",
+			callback:    commandRegister,
 		},
 	}
 }
