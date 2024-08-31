@@ -18,13 +18,30 @@ type completer struct {
 }
 
 func (c *completer) Do(line []rune, pos int) (newLine [][]rune, length int) {
-	for cmd := range c.commands {
-		if strings.HasPrefix(cmd, string(line)) {
-			newLine = append(newLine, []rune(cmd[pos:]))
+	words := strings.Fields(string(line))
+
+	if len(words) <= 1 {
+		// Autocomplete command names
+		for cmd := range c.commands {
+			if strings.HasPrefix(cmd, strings.ToLower(string(line))) {
+				newLine = append(newLine, []rune(cmd[pos:]))
+			}
+		}
+		return newLine, pos
+	}
+
+	// Autocomplete command parameters
+	command, ok := c.commands[strings.ToLower(words[0])]
+	if ok {
+		for _, param := range command.params {
+			lastWord := words[len(words)-1]
+			if strings.HasPrefix(param, lastWord) {
+				newLine = append(newLine, []rune(param[len(lastWord):]))
+			}
 		}
 	}
 
-	return
+	return newLine, pos
 }
 
 func startCLI(cfg *config) {
@@ -62,7 +79,7 @@ func startCLI(cfg *config) {
 		rl.SaveHistory(line)
 
 		inputWords := strings.Fields(line)
-		command, ok := commands[inputWords[0]]
+		command, ok := commands[strings.ToLower(inputWords[0])]
 		if !ok {
 			fmt.Println("invalid command:", line, "\ntype 'help' to see all available commands")
 			continue

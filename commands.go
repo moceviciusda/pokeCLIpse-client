@@ -3,6 +3,7 @@ package main
 type cliCommand struct {
 	name        string
 	description string
+	params      []string
 	callback    func(config *config, params ...string) error
 }
 
@@ -27,6 +28,12 @@ func getCommands() map[string]cliCommand {
 			name:        "register <username> <password>",
 			description: "Register a new account",
 			callback:    commandRegister,
+		},
+		"location": {
+			name:        "location [next|previous]",
+			description: "Get information about the current location or move to the next/previous location",
+			params:      []string{"next", "previous"},
+			callback:    commandLocation,
 		},
 	}
 }
