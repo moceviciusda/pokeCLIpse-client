@@ -3,15 +3,15 @@ package main
 import "fmt"
 
 func commandHelp(cfg *config, params ...string) error {
-	fmt.Println("Wecome to the PokeCLIpse!\nUsage:")
+	fmt.Println("Wecome to the PokeCLIpse!")
+	fmt.Println("This is a command line Pokemon game where you can explore the world and catch Pokemon.")
+	fmt.Println("Here are the available commands:")
 	fmt.Println()
 
-	for key, command := range getCommands() {
-		_, err := fmt.Printf("%v: %v\n", key, command.description)
+	for _, command := range getCommands() {
+		fmt.Println(command.name + ":")
+		fmt.Println(command.description)
 		fmt.Println()
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil
