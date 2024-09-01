@@ -30,9 +30,9 @@ func getCommands() map[string]cliCommand {
 			callback:    commandRegister,
 		},
 		"location": {
-			name:        "location [next|previous]",
-			description: "Get information about the current location or move to the next/previous location",
-			params:      []string{"next", "previous"},
+			name:        "location [next|previous|search]",
+			description: "Get information about the current location or use 'next' or 'previous' to move;\n use 'search' to find wild pokemon in the area",
+			params:      []string{"next", "previous", "search"},
 			callback:    commandLocation,
 		},
 	}

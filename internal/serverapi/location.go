@@ -74,3 +74,35 @@ func (c *Client) Move(direction string) (RespLocationInfo, error) {
 
 	return c.LocationInfo()
 }
+
+func (c *Client) Search() (Pokemon, error) {
+	if c.token == "" {
+		return Pokemon{}, fmt.Errorf("log in to explore the world")
+	}
+
+	req, err := http.NewRequest("GET", c.baseURL+"/location/search", nil)
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return Pokemon{}, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		err = bodyToError(resp.Body)
+		return Pokemon{}, err
+	}
+
+	var response Pokemon
+	err = json.NewDecoder(resp.Body).Decode(&response)
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	return response, nil
+}
