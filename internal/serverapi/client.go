@@ -8,7 +8,8 @@ import (
 type Client struct {
 	httpClient http.Client
 	baseURL    string
-	token      string
+	Token      string
+	Party      []Pokemon
 }
 
 func NewClient(timeout time.Duration, baseURL string) Client {
@@ -17,5 +18,6 @@ func NewClient(timeout time.Duration, baseURL string) Client {
 			Timeout: timeout,
 		},
 		baseURL: baseURL,
+		Party:   []Pokemon{},
 	}
 }

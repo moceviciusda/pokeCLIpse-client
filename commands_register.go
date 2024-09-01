@@ -60,6 +60,8 @@ func selectStarterLoop(cfg *config) error {
 			pokemon.Name += "*"
 		}
 
+		cfg.apiClient.Party = append(cfg.apiClient.Party, pokemon)
+
 		fmt.Printf("You received a %s<lvl %d>\n", pokemon.Name, pokemon.Level)
 		fmt.Println()
 		fmt.Println(pokemon.Stats)

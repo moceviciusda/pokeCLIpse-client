@@ -13,7 +13,7 @@ const (
 
 // RespLocationInfo contains information about user's current location.
 func (c *Client) LocationInfo() (RespLocationInfo, error) {
-	if c.token == "" {
+	if c.Token == "" {
 		return RespLocationInfo{}, fmt.Errorf("log in to explore the world")
 	}
 
@@ -22,7 +22,7 @@ func (c *Client) LocationInfo() (RespLocationInfo, error) {
 		return RespLocationInfo{}, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -46,7 +46,7 @@ func (c *Client) LocationInfo() (RespLocationInfo, error) {
 
 // Move moves the user to the next or previous location.
 func (c *Client) Move(direction string) (RespLocationInfo, error) {
-	if c.token == "" {
+	if c.Token == "" {
 		return RespLocationInfo{}, fmt.Errorf("log in to explore the world")
 	}
 
@@ -59,7 +59,7 @@ func (c *Client) Move(direction string) (RespLocationInfo, error) {
 		return RespLocationInfo{}, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -76,7 +76,7 @@ func (c *Client) Move(direction string) (RespLocationInfo, error) {
 }
 
 func (c *Client) Search() (Pokemon, error) {
-	if c.token == "" {
+	if c.Token == "" {
 		return Pokemon{}, fmt.Errorf("log in to explore the world")
 	}
 
@@ -85,7 +85,7 @@ func (c *Client) Search() (Pokemon, error) {
 		return Pokemon{}, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {

@@ -10,7 +10,7 @@ import (
 // Register registers a new user with the given username and password
 // and logs in the user.
 func (c *Client) Register(username, password string) (RespLogin, error) {
-	if c.token != "" {
+	if c.Token != "" {
 		return RespLogin{}, fmt.Errorf("already logged in")
 	}
 

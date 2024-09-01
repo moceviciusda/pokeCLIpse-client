@@ -12,7 +12,20 @@ func commandLogin(cfg *config, params ...string) error {
 		return err
 	}
 
-	fmt.Println("Welcome,", user.Username)
+	party, err := cfg.apiClient.GetPokemonParty()
+	if err != nil {
+		return err
+	}
+
+	cfg.apiClient.Party = party
+
+	fmt.Println("Welcome back,", user.Username)
+	fmt.Println("You have the following Pokemon in your party:")
+	fmt.Println()
+	for i, pokemon := range party {
+		fmt.Printf("	%d. %s<lvl %d>\n", i+1, pokemon.Name, pokemon.Level)
+	}
+	fmt.Println()
 
 	return nil
 }

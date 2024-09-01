@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) CreatePokemon(name string, level int, shiny bool) (Pokemon, error) {
-	if c.token == "" {
+	if c.Token == "" {
 		return Pokemon{}, fmt.Errorf("not logged in")
 	}
 
@@ -33,7 +33,7 @@ func (c *Client) CreatePokemon(name string, level int, shiny bool) (Pokemon, err
 		return Pokemon{}, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.Token)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -55,6 +55,43 @@ func (c *Client) CreatePokemon(name string, level int, shiny bool) (Pokemon, err
 	err = json.Unmarshal(data, &response)
 	if err != nil {
 		return Pokemon{}, err
+	}
+
+	return response, nil
+}
+
+func (c *Client) GetPokemonParty() ([]Pokemon, error) {
+	if c.Token == "" {
+		return nil, fmt.Errorf("not logged in")
+	}
+
+	req, err := http.NewRequest("GET", c.baseURL+"/pokemon/party", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.Token)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		err = bodyToError(resp.Body)
+		return nil, err
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	response := []Pokemon{}
+	err = json.Unmarshal(data, &response)
+	if err != nil {
+		return nil, err
 	}
 
 	return response, nil

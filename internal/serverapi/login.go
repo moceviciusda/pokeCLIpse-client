@@ -46,6 +46,6 @@ func (c *Client) Login(username, password string) (RespLogin, error) {
 		return RespLogin{}, err
 	}
 
-	c.token = response.Token
+	c.Token = response.Token
 	return response, nil
 }

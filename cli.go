@@ -34,6 +34,15 @@ func startCLI(cfg *config) {
 	cfg.readline = rl
 
 	for {
+		if cfg.apiClient.Token == "" {
+			fmt.Println("Welcome to PokeCLIpse!")
+			fmt.Println("Please login or register to start playing.")
+			fmt.Println("Type 'help' to see all available commands.")
+			fmt.Println()
+		} else if len(cfg.apiClient.Party) == 0 {
+			selectStarterLoop(cfg)
+		}
+
 		line, err := rl.Readline()
 		if err == readline.ErrInterrupt {
 			if len(line) == 0 {
