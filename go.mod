@@ -1,6 +1,6 @@
 module github.com/moceviciusda/pokeCLIpse-client
 
-go 1.22.6
+go 1.23.0
 
 require (
 	github.com/chzyer/readline v1.5.1

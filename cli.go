@@ -107,10 +107,15 @@ func (c *completer) Do(line []rune, pos int) (newLine [][]rune, length int) {
 	return newLine, pos
 }
 
-func selectOption(rl *readline.Instance, prompt string, options []string) (string, error) {
+func selectOption(rl *readline.Instance, prompt string, options []string, displayFunc func([]string)) (string, error) {
 	fmt.Println(prompt)
-	for i, opt := range options {
-		fmt.Printf("	%d. %s\n", i+1, opt)
+
+	if displayFunc != nil {
+		displayFunc(options)
+	} else {
+		for i, opt := range options {
+			fmt.Printf("	%d. %s\n", i+1, opt)
+		}
 	}
 
 	rl.Config.AutoComplete.(*completer).selectOptions = options

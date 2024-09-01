@@ -15,6 +15,7 @@ func commandLocation(cfg *config, params ...string) error {
 
 		fmt.Println("You can move using 'location next' or 'location previous' commands")
 		fmt.Println("Previous:", location.Previous, "| Next:", location.Next)
+		fmt.Println()
 
 		return nil
 	}
@@ -29,6 +30,7 @@ func commandLocation(cfg *config, params ...string) error {
 		fmt.Println("You are now at", location.Name)
 		fmt.Println()
 		fmt.Println("Previous:", location.Previous, "| Next:", location.Next)
+		fmt.Println()
 		return nil
 
 	case "search":
@@ -37,14 +39,14 @@ func commandLocation(cfg *config, params ...string) error {
 			return err
 		}
 
-		fmt.Println("You found a wild <lvl", pokemon.Level, ">", pokemon.Name)
+		if pokemon.Shiny {
+			pokemon.Name += "*"
+		}
+
+		fmt.Printf("You encountered a wild %s<lvl %d>\n", pokemon.Name, pokemon.Level)
 		fmt.Println()
-		fmt.Println("HP:", pokemon.HP)
-		fmt.Println("Attack:", pokemon.Attack)
-		fmt.Println("Defense:", pokemon.Defense)
-		fmt.Println("Special Attack:", pokemon.SpecialAttack)
-		fmt.Println("Special Defense:", pokemon.SpecialDefense)
-		fmt.Println("Speed:", pokemon.Speed)
+		fmt.Println(pokemon.Stats)
+		fmt.Println()
 		return nil
 
 	default:
