@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 type cliCommand struct {
 	name        string
 	description string
@@ -38,5 +42,20 @@ func getCommands() map[string]cliCommand {
 			description: "	Exit the Game",
 			callback:    commandExit,
 		},
+		"select": {
+			name:        "test select",
+			description: "	testing option select",
+			callback:    commandSelect,
+		},
 	}
+}
+
+func commandSelect(cfg *config, params ...string) error {
+	options := []string{"Bulbasaur", "Charmander", "Squirtle"}
+	selected, err := selectOption(cfg.readline, "Choose an option: ", options)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("You selected: %s\n", selected)
+	return nil
 }
