@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/websocket"
 )
 
 const (
@@ -105,4 +107,20 @@ func (c *Client) Search() (Pokemon, error) {
 	}
 
 	return response, nil
+}
+
+func (c *Client) WebsocketTest() (*websocket.Conn, error) {
+	if c.Token == "" {
+		return nil, fmt.Errorf("log in to explore the world")
+	}
+
+	header := http.Header{}
+	header.Add("Authorization", "Bearer "+c.Token)
+
+	conn, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080/v1/location/search", header)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, nil
 }

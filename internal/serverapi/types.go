@@ -2,6 +2,10 @@ package serverapi
 
 import "fmt"
 
+type Error struct {
+	Error string `json:"error"`
+}
+
 type RespLogin struct {
 	ID       string `json:"id"`
 	Token    string `json:"token"`
