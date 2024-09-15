@@ -46,30 +46,16 @@ func commandLocation(cfg *config, params ...string) error {
 
 		defer conn.Close()
 
-		// var message interface{}
-		// err = conn.ReadJSON(&message)
-		// if err != nil {
-		// 	return err
-		// }
-
-		// if errorMsg, ok := message.(serverapi.Error); ok {
-		// 	return fmt.Errorf(errorMsg.Error)
-		// }
-
-		// pokemon, ok := message.(serverapi.Pokemon)
-		// if !ok {
-		// 	return fmt.Errorf("unexpected message from server")
-		// }
-
-		// fmt.Printf("You encountered a wild %s<lvl %d>\n", pokemon.Name, pokemon.Level)
-		// fmt.Println()
-		// fmt.Println(pokemon.Stats)
-		// fmt.Println()
-
-		var pokemon serverapi.Pokemon
+		var pokemon struct {
+			Error string `json:"error"`
+			serverapi.Pokemon
+		}
 		err = conn.ReadJSON(&pokemon)
 		if err != nil {
 			return err
+		}
+		if pokemon.Error != "" {
+			return fmt.Errorf(pokemon.Error)
 		}
 
 		if pokemon.Shiny {
