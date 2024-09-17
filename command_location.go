@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/gorilla/websocket"
 	"github.com/moceviciusda/pokeCLIpse-client/internal/serverapi"
 )
 
@@ -67,9 +68,65 @@ func commandLocation(cfg *config, params ...string) error {
 		fmt.Println(pokemon.Stats)
 		fmt.Println()
 
+		action, err := selectOption(cfg.readline, "What do you want to do?", []string{"battle", "run"}, nil)
+		if err != nil {
+			return err
+		}
+
+		switch action {
+		case "battle":
+			cfg.handleWildBattle(conn)
+			// fmt.Println("You caught the pokemon!")
+			// fmt.Println()
+
+		case "run":
+			conn.WriteMessage(websocket.TextMessage, []byte("run"))
+			fmt.Println("You ran away!")
+			fmt.Println()
+		default:
+			return fmt.Errorf("invalid action. Use 'battle' or 'run'")
+		}
+
 		return nil
 
 	default:
 		return fmt.Errorf("invalid parameter. Use 'next' or 'previous' to move, or 'search' to find wild pokemon")
+	}
+}
+
+func (cfg *config) handleWildBattle(conn *websocket.Conn) error {
+	conn.WriteMessage(websocket.TextMessage, []byte("battle"))
+
+	for {
+		var message struct {
+			Error   string   `json:"error"`
+			Message string   `json:"message"`
+			Options []string `json:"options"`
+		}
+		err := conn.ReadJSON(&message)
+		if err != nil {
+			return err
+		}
+
+		if message.Error != "" {
+			return fmt.Errorf(message.Error)
+		}
+
+		if len(message.Options) > 0 {
+			action, err := selectOption(cfg.readline, message.Message, message.Options, nil)
+			if err != nil {
+				return err
+			}
+
+			err = conn.WriteMessage(websocket.TextMessage, []byte(action))
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		fmt.Println(message.Message)
+		fmt.Print("\033[0m") // reset color
+
 	}
 }
