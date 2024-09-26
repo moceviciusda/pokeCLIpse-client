@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/moceviciusda/pokeCLIpse-client/internal/serverapi"
 	"github.com/moceviciusda/pokeCLIpse-client/pkg/pokeutils"
 )
 
@@ -33,11 +32,10 @@ func commandRegister(cfg *config, params ...string) error {
 }
 
 func selectStarterLoop(cfg *config) error {
-	var pokemon serverapi.Pokemon
 	isShiny := pokeutils.IsShiny()
 
 	for {
-		starter, err := selectOption(cfg.readline, "Select your starter Pokemon:", pokeutils.Starters, func(s []string) {
+		starter := selectOption(cfg.readline, "Select your starter Pokemon:", pokeutils.Starters, func(s []string) {
 			for i, pokemon := range s {
 				if i%3 == 0 {
 					fmt.Println()
@@ -46,11 +44,8 @@ func selectStarterLoop(cfg *config) error {
 				fmt.Printf("		%d. %s%s", i+1, pokemon, typeIcon)
 			}
 		})
-		if err != nil {
-			return err
-		}
 
-		pokemon, err = cfg.apiClient.CreatePokemon(starter, 5, isShiny)
+		pokemon, err := cfg.apiClient.CreatePokemon(starter, 5, isShiny)
 		if err != nil {
 			fmt.Println("Error creating Pokemon:", err)
 			continue

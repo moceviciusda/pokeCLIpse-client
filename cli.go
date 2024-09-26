@@ -116,7 +116,7 @@ func (c *completer) Do(line []rune, pos int) (newLine [][]rune, length int) {
 	return newLine, pos
 }
 
-func selectOption(rl *readline.Instance, prompt string, options []string, displayFunc func([]string)) (string, error) {
+func selectOption(rl *readline.Instance, prompt string, options []string, displayFunc func([]string)) string {
 	fmt.Println(prompt)
 
 	if displayFunc != nil {
@@ -135,7 +135,7 @@ func selectOption(rl *readline.Instance, prompt string, options []string, displa
 	for {
 		line, err := rl.Readline()
 		if err != nil {
-			return "", err
+			return err.Error()
 		}
 
 		line = strings.TrimSpace(line)
@@ -144,12 +144,12 @@ func selectOption(rl *readline.Instance, prompt string, options []string, displa
 		}
 
 		if choice, err := strconv.Atoi(line); err == nil && choice > 0 && choice <= len(options) {
-			return options[choice-1], nil
+			return options[choice-1]
 		}
 
 		for i, opt := range options {
 			if strings.EqualFold(line, opt) {
-				return options[i], nil
+				return options[i]
 			}
 		}
 

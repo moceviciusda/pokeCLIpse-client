@@ -68,16 +68,11 @@ func commandLocation(cfg *config, params ...string) error {
 		fmt.Println(pokemon.Stats)
 		fmt.Println()
 
-		action, err := selectOption(cfg.readline, "What do you want to do?", []string{"battle", "run"}, nil)
-		if err != nil {
-			return err
-		}
+		action := selectOption(cfg.readline, "What do you want to do?", []string{"battle", "run"}, nil)
 
 		switch action {
 		case "battle":
 			cfg.handleWildBattle(conn)
-			// fmt.Println("You caught the pokemon!")
-			// fmt.Println()
 
 		case "run":
 			conn.WriteMessage(websocket.TextMessage, []byte("run"))
@@ -113,12 +108,9 @@ func (cfg *config) handleWildBattle(conn *websocket.Conn) error {
 		}
 
 		if len(message.Options) > 0 {
-			action, err := selectOption(cfg.readline, message.Message, message.Options, nil)
-			if err != nil {
-				return err
-			}
+			action := selectOption(cfg.readline, message.Message, message.Options, nil)
 
-			err = conn.WriteMessage(websocket.TextMessage, []byte(action))
+			err := conn.WriteMessage(websocket.TextMessage, []byte(action))
 			if err != nil {
 				return err
 			}
@@ -127,6 +119,5 @@ func (cfg *config) handleWildBattle(conn *websocket.Conn) error {
 
 		fmt.Println(message.Message)
 		fmt.Print("\033[0m") // reset color
-
 	}
 }
