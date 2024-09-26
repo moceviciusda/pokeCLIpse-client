@@ -118,6 +118,5 @@ func (cfg *config) handleWildBattle(conn *websocket.Conn) error {
 		}
 
 		fmt.Println(message.Message)
-		fmt.Print("\033[0m") // reset color
 	}
 }
