@@ -40,7 +40,7 @@ func commandLocation(cfg *config, params ...string) error {
 
 	case "search":
 
-		conn, err := cfg.apiClient.WebsocketTest()
+		conn, err := cfg.apiClient.LocationSearch()
 		if err != nil {
 			return err
 		}

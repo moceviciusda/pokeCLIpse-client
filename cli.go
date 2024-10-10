@@ -40,7 +40,7 @@ func startCLI(cfg *config) {
 			fmt.Println("Type 'help' to see all available commands.")
 			fmt.Println()
 		} else if len(cfg.apiClient.Party) == 0 {
-			selectStarterLoop(cfg)
+			selectStarter(cfg)
 		}
 
 		line, err := rl.Readline()

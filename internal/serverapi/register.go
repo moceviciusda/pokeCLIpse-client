@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/websocket"
 )
 
 // Register registers a new user with the given username and password
@@ -40,4 +42,20 @@ func (c *Client) Register(username, password string) (RespLogin, error) {
 	}
 
 	return c.Login(username, password)
+}
+
+func (c *Client) SelectStarter() (*websocket.Conn, error) {
+	if c.Token == "" {
+		return nil, fmt.Errorf("log in to explore the world")
+	}
+
+	header := http.Header{}
+	header.Add("Authorization", "Bearer "+c.Token)
+
+	conn, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080/v1/starter", header)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, nil
 }

@@ -77,39 +77,39 @@ func (c *Client) Move(direction string) (RespLocationInfo, error) {
 	return c.LocationInfo()
 }
 
-func (c *Client) Search() (Pokemon, error) {
-	if c.Token == "" {
-		return Pokemon{}, fmt.Errorf("log in to explore the world")
-	}
+// func (c *Client) Search() (Pokemon, error) {
+// 	if c.Token == "" {
+// 		return Pokemon{}, fmt.Errorf("log in to explore the world")
+// 	}
 
-	req, err := http.NewRequest("GET", c.baseURL+"/location/search", nil)
-	if err != nil {
-		return Pokemon{}, err
-	}
+// 	req, err := http.NewRequest("GET", c.baseURL+"/location/search", nil)
+// 	if err != nil {
+// 		return Pokemon{}, err
+// 	}
 
-	req.Header.Set("Authorization", "Bearer "+c.Token)
+// 	req.Header.Set("Authorization", "Bearer "+c.Token)
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return Pokemon{}, err
-	}
-	defer resp.Body.Close()
+// 	resp, err := c.httpClient.Do(req)
+// 	if err != nil {
+// 		return Pokemon{}, err
+// 	}
+// 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		err = bodyToError(resp.Body)
-		return Pokemon{}, err
-	}
+// 	if resp.StatusCode != 200 {
+// 		err = bodyToError(resp.Body)
+// 		return Pokemon{}, err
+// 	}
 
-	var response Pokemon
-	err = json.NewDecoder(resp.Body).Decode(&response)
-	if err != nil {
-		return Pokemon{}, err
-	}
+// 	var response Pokemon
+// 	err = json.NewDecoder(resp.Body).Decode(&response)
+// 	if err != nil {
+// 		return Pokemon{}, err
+// 	}
 
-	return response, nil
-}
+// 	return response, nil
+// }
 
-func (c *Client) WebsocketTest() (*websocket.Conn, error) {
+func (c *Client) LocationSearch() (*websocket.Conn, error) {
 	if c.Token == "" {
 		return nil, fmt.Errorf("log in to explore the world")
 	}
