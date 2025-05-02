@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/websocket"
 )
@@ -117,7 +118,14 @@ func (c *Client) LocationSearch() (*websocket.Conn, error) {
 	header := http.Header{}
 	header.Add("Authorization", "Bearer "+c.Token)
 
-	conn, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080/v1/location/search", header)
+	url := fmt.Sprintf("%s/location/search", c.baseURL)
+	if strings.HasPrefix(c.baseURL, "http://") {
+		url = strings.Replace(url, "http://", "ws://", 1)
+	} else if strings.HasPrefix(c.baseURL, "https://") {
+		url = strings.Replace(url, "https://", "wss://", 1)
+	}
+
+	conn, _, err := websocket.DefaultDialer.Dial(url, header)
 	if err != nil {
 		return nil, err
 	}
