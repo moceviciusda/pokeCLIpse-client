@@ -1,6 +1,21 @@
-# PokeCLIpse-Client
+# PokéCLIpse-Client
 
-PokeCLIpse is a command-line Pokémon game client where you can explore the world, encounter wild Pokémon, and battle with your party.
+PokéCLIpse is a command-line Pokémon game client that allows you to explore a Pokémon world, catch wild Pokémon, and battle them. This client is designed to work with the [PokéCLIpse Server](https://github.com/moceviciusda/pokeCLIpse-server), which provides the backend functionality for the game.
+
+This project is a work in progress and is intended for educational purposes. It is not affiliated with or endorsed by The Pokémon Company or Nintendo.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Clone and Build](#clone-and-build)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  - [Available Commands](#available-commands)
+  - [Battle System](#battle-system)
+- [Dependencies](#dependencies)
+- [Project Structure](#project-structure)
+
 
 ## Features
 
